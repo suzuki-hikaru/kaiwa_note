@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel=“stylesheet” href="{{ url_for('static', filename='css/style.css') }}">
+    <meta charset="UTF-8">
+    <title>会話note</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="#">会話note</a>
+    </nav>
+    <br><br>
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-8">
+                <p>ここに会話が記録されます
+                    <button type="button" class="btn btn-success" id="btn">会話開始</button>
+                </p>
+                <div id="content"></div>
+            </div>
+            <div class="col-4">
+                <h3>Twitterのトレンドを見てみる</h3>
+                <form action="/twReload" method="POST" enctype="multipart/form-data" class="form-inline">
+                    <button type="submit" class="btn btn-primary mb-2">表示</button>
+                </form>
+                <br>
+                <h3>こんな話題はどうですか？</h3>
+                <ul>
+                    {% for item in items %}
+                    <li>{{ item }}</li>
+                    {% endfor %}
+                </ul>
+                <br>
+                <h3>あなたのwordcloud</h3><br>
+                <form action="/wimage" method="POST" enctype="multipart/form-data" class="form-inline">
+                    <button type="submit" class="btn btn-primary mb-2">今日のwordcloudを作成</button>
+                </form>
+                <img src="/static/images/{{imagename}}" width="500" height="400" class="d-inline-block align-top"
+                    alt="wordcloudが作成されていません">
+                <a href="/static/images/{{imagename}}" download="{{imagename}}">ダウンロード</a>
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <script>
+        const speech = new webkitSpeechRecognition();
+        speech.lang = 'ja-JP';
+
+        const btn = document.getElementById('btn');
+        const content = document.getElementById('content');
+
+        btn.addEventListener('click', function () {
+            // 音声認識をスタート
+            speech.start();
+        });
+
+        //---------------追記---------------//
+        //音声自動文字起こし機能
+        speech.onresult = function (e) {
+            speech.stop();
+            if (e.results[0].isFinal) {
+                const date1 = new Date();
+                // console.log(date1); // Sat Feb 01 2020 20:49:28 GMT+0900 (日本標準時)
+                // console.log(date1.toLocaleString());
+
+                var autotext = e.results[0][0].transcript
+                console.log(e);
+                console.log(date1.toLocaleString() + ":" + autotext);
+                timeStamp = date1.getHours() + ":" + date1.getMinutes() + ":" + date1.getSeconds()
+                // content.innerHTML += '<div>' + autotext + '</div>';
+
+                content.innerHTML += '<div>' + timeStamp + '  ' + autotext + '</div>';
+            }
+
+        }
+
+        speech.onend = () => {
+            speech.start()
+        };
+        //--------------------------------//
+        $(function () {
+            $.ajax({
+                url: 'app.py',
+                type: 'post',
+                data: text,
+            }).done(function (data) {
+                console.log(data);
+            });
+        }).fail(function () {
+            console.log('failed');
+        });
+    </script>
+
+    <body>
+        <html>

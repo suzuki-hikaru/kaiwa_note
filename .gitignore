@@ -1,0 +1,7 @@
+/twitter/
+/app/resources/
+/twitter/__pycache__/
+/twitter/config.py
+/app/__pycache__/
+/app/config.py
+/my_venv/

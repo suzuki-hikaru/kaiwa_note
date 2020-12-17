@@ -1,0 +1,52 @@
+
+リポジトリをクローン
+git clone git@github.com:user/111.git
+
+インストールに必要な情報の更新
+sudo apt update  
+sudo apt upgrade
+
+
+sudo apt-get install portaudio19-dev
+sudo apt-get install python-pyaudio python3-pyaudio
+
+sudo apt install python-pip
+pip install --upgrade pip
+sudo apt install python3-venv
+
+vエンブ
+python3 -m venv my_venv
+. my_venv/bin/activate
+
+pip install pyaudio
+pip install google-cloud-speech
+
+pip install requests-oauthlib
+pip install janome
+pip install wordcloud
+pip install emoji --upgrade
+
+pip install -r requirements.txt
+
+pip list
+pip freeze
+python app.py
+
+djnago,Flask起動
+
+python manage.py migrate
+python manage.py runserver 0.0.0.0:8000  
+localhost:8000へアクセスできれば完了
+終了するとき
+ctrl + c 
+
+deactivate
+
+exit
+
+git init
+git add README.md
+git commit -m "base"
+git branch -M master
+git remote add origin git@github.com:suzuki-hikaru/kaiwa_note.git
+git push -u origin master
