@@ -31,11 +31,8 @@ pip list
 pip freeze
 python app.py
 
-djnago,Flask起動
+Flask起動
 
-python manage.py migrate
-python manage.py runserver 0.0.0.0:8000  
-localhost:8000へアクセスできれば完了
 終了するとき
 ctrl + c 
 
